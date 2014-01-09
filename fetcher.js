@@ -51,9 +51,41 @@ var twitterFetcher = function () {
                 showRt: b,
                 customCallback: m,
                 showInteraction: n
-            }) : (t = !0, y = c, l = g, s = f, r = a, q = h, z = b, u = d, w = m, A = n, c = document.createElement("script"), c.type = "text/javascript", c.src = "http://cdn.syndication.twimg.com/widgets/timelines/" + e + "?&lang=en&callback=twitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(), document.getElementsByTagName("head")[0].appendChild(c))
+            }) : (t = !0, y = c, l = g, s = f, r = a, q = h, z = b, u = d, w = m, A = n, c = document.createElement("script"), c.type = "text/javascript", c.src = "http://cdn.syndication.twimg.com/widgets/timelines/" + e + "?&lang=en&callback=twitterFetcher.callback2&suppress_response_codes=true&rnd=" + Math.random(), document.getElementsByTagName("head")[0].appendChild(c))
         },
+
+        callback2: function (e) {
+          // DEBUGGING
+          // console.log(e);
+          xhrDoc = xhrDoc = document.implementation.createHTMLDocument("XHR Doc");
+          xhrDoc.documentElement.innerHTML = e.body;
+          var eContent = xhrDoc.getElementsByClassName("e-entry-content");
+          // console.log(eContent);
+          for (i = 0; i < eContent.length; i++) {
+            var img = eContent[i].getElementsByTagName("img")[0];
+            var title = (typeof(img) != 'undefined') ? img.getAttribute("title") : 'NA';
+            if (title == 'View image on Twitter') {
+              console.log(img.src);
+            }
+          }
+        },
+
         callback: function (e) {
+
+          // DEBUGGING
+          // console.log(e);
+          xhrDoc = xhrDoc = document.implementation.createHTMLDocument("XHR Doc");
+          xhrDoc.documentElement.innerHTML = e.body;
+          var eContent = xhrDoc.getElementsByClassName("e-entry-content");
+          // console.log(eContent);
+          for (i = 0; i < eContent.length; i++) {
+            var img = eContent[i].getElementsByTagName("img")[0];
+            var title = (typeof(img) != 'undefined') ? img.getAttribute("title") : 'NA';
+            if (title == 'View image on Twitter') {
+              console.log(img.src);
+            }
+          }
+          
             var c = document.createElement("div");
             c.innerHTML = e.body;
             "undefined" === typeof c.getElementsByClassName && (v = !1);
