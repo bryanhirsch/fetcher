@@ -51,7 +51,7 @@ var twitterFetcher = function () {
                 showRt: b,
                 customCallback: m,
                 showInteraction: n
-            }) : (t = !0, y = c, l = g, s = f, r = a, q = h, z = b, u = d, w = m, A = n, c = document.createElement("script"), c.type = "text/javascript", c.src = "//cdn.syndication.twimg.com/widgets/timelines/" + e + "?&lang=en&callback=twitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(), document.getElementsByTagName("head")[0].appendChild(c))
+            }) : (t = !0, y = c, l = g, s = f, r = a, q = h, z = b, u = d, w = m, A = n, c = document.createElement("script"), c.type = "text/javascript", c.src = "http://cdn.syndication.twimg.com/widgets/timelines/" + e + "?&lang=en&callback=twitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(), document.getElementsByTagName("head")[0].appendChild(c))
         },
         callback: function (e) {
             var c = document.createElement("div");
@@ -62,11 +62,12 @@ var twitterFetcher = function () {
                 f = [],
                 a = [],
                 h = [],
-                d = 0;
+                d = 0,
+                i = [];
             if (v)
                 for (c = c.getElementsByClassName("tweet"); d < c.length;) {
                     0 < c[d].getElementsByClassName("retweet-credit").length ? a.push(!0) : a.push(!1);
-                    if (!a[d] || a[d] && z) e.push(c[d].getElementsByClassName("e-entry-title")[0]), h.push(c[d].getAttribute("data-tweet-id")), g.push(c[d].getElementsByClassName("p-author")[0]), f.push(c[d].getElementsByClassName("dt-updated")[0]);
+                    if (!a[d] || a[d] && z) e.push(c[d].getElementsByClassName("e-entry-title")[0]), h.push(c[d].getAttribute("data-tweet-id")), g.push(c[d].getElementsByClassName("p-author")[0]), f.push(c[d].getElementsByClassName("dt-updated")[0]), i.push(c[d].getElementsByClassName("autosized-media")[0]);
                     d++
                 } else
                     for (c = p(c, "tweet"); d < c.length;) e.push(p(c[d], "e-entry-title")[0]), h.push(c[d].getAttribute("data-tweet-id")), g.push(p(c[d], "p-author")[0]), f.push(p(c[d], "dt-updated")[0]), 0 < p(c[d], "retweet-credit").length ? a.push(!0) : a.push(!1), d++;
