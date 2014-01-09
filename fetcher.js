@@ -55,10 +55,35 @@ var twitterFetcher = function () {
         },
 
         callback2: function (e) {
-          // DEBUGGING
-          // console.log(e);
-          xhrDoc = xhrDoc = document.implementation.createHTMLDocument("XHR Doc");
+          // This is the result we're going to return to the consumer.
+          // JSON tweet data.
+          var result = [];
+          
+          xhrDoc = document.implementation.createHTMLDocument("XHR Doc");
           xhrDoc.documentElement.innerHTML = e.body;
+          
+          var tweets = xhrDoc.getElementsByClassName("tweet");
+          for (i = 0; i < tweets.length; i++) {
+
+            // DEBUGGING.
+            console.log(tweets[i]);
+            window.tweet = tweets[i];
+
+            var tweet = {
+              permalink:         this._getPermalink(tweets[i]),
+              time:              this._getTime(tweets[i]),
+              author:            this._getAuthor(tweets[i]),
+              contentHTML:       this._getTweetContentHTML(tweets[i]),
+              retweetCreditHTML: this._getRetweetCreditHTML(tweets[i]),
+              media:             this._getMedia(tweets[i]),
+            };
+            result.push(tweet);
+          }
+
+          console.log('WORK IN PROGRESS. result:');
+          console.log(result);
+
+
           var eContent = xhrDoc.getElementsByClassName("e-entry-content");
           // console.log(eContent);
           for (i = 0; i < eContent.length; i++) {
@@ -68,6 +93,80 @@ var twitterFetcher = function () {
               console.log(img.src);
             }
           }
+        },
+
+        /**
+         * @param HTML element
+         * @return string
+         */
+        _getPermalink: function(element) {
+          var permalink = element.getElementsByClassName("permalink");
+          return permalink.href;
+        },
+
+        /**
+         * @param HTML element
+         * @return obj
+         */
+        _getTime: function(element) {
+          var timeElement = element.getElementsByTagName("time")[0];
+          var time = {
+            datetime: timeElement.getAttribute("datetime"),
+            title:    timeElement.getAttribute("title"),
+            label:    timeElement.getAttribute("aria-label"),
+          };
+          return time;
+        },
+
+        /**
+         * @param HTML element
+         * @return obj
+         */
+        _getAuthor: function(element) {
+          var authorElement = element.getElementsByClassName("p-author")[0];
+          var author = {
+            profileUrl: authorElement.getElementsByTagName("a")[0].getAttribute("href"),
+            label:      authorElement.getElementsByTagName("a")[0].getAttribute("aria-label"),
+            avatar:     authorElement.getElementsByTagName("img")[0].getAttribute("src"),
+            avatar2x:   authorElement.getElementsByTagName("img")[0].getAttribute("data-src-2x"),
+            fullName:   authorElement.getElementsByClassName("p-name")[0].innerHTML,
+            userName:   authorElement.getElementsByClassName('p-nickname')[0].getElementsByTagName("b")[0].innerHTML,
+          };
+          return author
+        },
+
+        /**
+         * @param HTML element
+         * @return obj
+         */
+        _getTweetContentHTML: function(element) {
+          return element.getElementsByClassName("e-entry-title")[0];
+        },
+
+        /**
+         * @param HTML element
+         * @return obj
+         */
+        _getRetweetCreditHTML: function(element) {
+          return element.getElementsByClassName("retweet-credit")[0]; 
+        },
+
+        /**
+         * @param HTML element
+         * @return obj
+         */
+        _getMedia: function(element) {
+          // NOTE: This assumes there's not more than ONE piece of inline media content per tweet.
+          //  It this assumption is wrong, this logic should be updated to return an array of media
+          //  objects, rather than a single one.
+          var mediaElement = element.getElementsByClassName("inline-media")[0];
+          if (typeof(mediaElement) != 'undefined') {
+            var media = {
+              linkTo: mediaElement.getElementsByTagName("a")[0].getAttribute("href")
+              // UNFINISHED. CONTINUE HERE.
+            };
+          }
+          return typeof(media != 'undefined') ? media : '';
         },
 
         callback: function (e) {
