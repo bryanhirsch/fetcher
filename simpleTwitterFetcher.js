@@ -1,5 +1,5 @@
 var simpleTwitterFetcher = function() {
-  var id, limit;
+  var id, limit, data;
   
   return {
     /**
@@ -24,18 +24,16 @@ var simpleTwitterFetcher = function() {
     },
 
     /**
-     * Retreive data stored in div#simpleTwitterFetcherData.
+     * Retreive tweet data stored in simpleTwitterFetcher.data.
      */
     retreive: function() {
-      var data = document.getElementById("simpleTwitterFetcherData").getAttribute("data-simple-twitter-fetch");
-      return JSON.parse(data);
+      return this.data;
     },
 
     /**
      * This is the callback invoked by fetch (really, called by Twitter's JSONP's
      * response). It stores the latest Twitter timeline data in
-     * div#simpleTwitterFetcherData in the data-simple-twitter-fetcher
-     * attribute.
+     * simpleTwitterFetcher.data.
      *
      * @param html e 
      *   JSON including rendered markup for an embeddable Twitter timeline
@@ -70,16 +68,8 @@ var simpleTwitterFetcher = function() {
       }
 
       // Store results.
-      // If div#simpleTwitterFetcherData element does not exist yet, create it.
-      if (!document.getElementById('simpleTwitterFetcherData')) {
-        var c =  document.createElement("div");
-        c.id = "simpleTwitterFetcherData";
-        document.getElementsByTagName("body")[0].appendChild(c);
-      }
-      // Get element where we're storing latest tweet data.
-      var element = document.getElementById("simpleTwitterFetcherData");
-      // Convert results to a string and store them.
-      element.setAttribute('data-simple-twitter-fetch', JSON.stringify(result));
+      this.data = result;
+
     },
 
     /**
