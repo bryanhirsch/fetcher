@@ -80,7 +80,6 @@ var simpleTwitterFetcher = function() {
       var element = document.getElementById("simpleTwitterFetcherData");
       // Convert results to a string and store them.
       element.setAttribute('data-simple-twitter-fetch', JSON.stringify(result));
-      console.log(result);
     },
 
     /**
