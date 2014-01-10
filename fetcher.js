@@ -64,11 +64,6 @@ var twitterFetcher = function () {
           
           var tweets = xhrDoc.getElementsByClassName("tweet");
           for (i = 0; i < tweets.length; i++) {
-
-            // DEBUGGING.
-            console.log(tweets[i]);
-            window.tweet = tweets[i];
-
             var tweet = {
               id:                this._getId(tweets[i]),
               permalink:         this._getPermalink(tweets[i]),
@@ -86,20 +81,8 @@ var twitterFetcher = function () {
             };
             result.push(tweet);
           }
-
-          console.log('WORK IN PROGRESS. result:');
           console.log(result);
-
-
-          var eContent = xhrDoc.getElementsByClassName("e-entry-content");
-          // console.log(eContent);
-          for (i = 0; i < eContent.length; i++) {
-            var img = eContent[i].getElementsByTagName("img")[0];
-            var title = (typeof(img) != 'undefined') ? img.getAttribute("title") : 'NA';
-            if (title == 'View image on Twitter') {
-              console.log(img.src);
-            }
-          }
+          return result;
         },
 
         /**
