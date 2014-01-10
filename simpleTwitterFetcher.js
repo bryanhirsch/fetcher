@@ -1,10 +1,9 @@
-var simpleTwitterFetcher = function(id) {
+var simpleTwitterFetcher = function() {
   return {
     fetch: function(id) {
       var c =  document.createElement("script");
       c.type = "text/javascript";
-      c.src = "http://cdn.syndication.twimg.com/widgets/timelines/" + id + "?&lang=en&callback=simpleTwitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(); 
-      c.data-test = 'testing 1  2 3';
+      c.src = "//cdn.syndication.twimg.com/widgets/timelines/" + id + "?&lang=en&callback=simpleTwitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(); 
       document.getElementsByTagName("head")[0].appendChild(c);
     },
 
