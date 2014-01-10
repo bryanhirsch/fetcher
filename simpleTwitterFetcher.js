@@ -1,20 +1,56 @@
 var simpleTwitterFetcher = function() {
+  var id, limit;
+  
   return {
-    fetch: function(id) {
+    /**
+     * This method fetches data using JSONP. 
+     *
+     * It creates a script tag pointing at Twitter's CDN. Twitter responds by
+     * calling response our custom "callback" function and passing it the HTML
+     * used to populate Twitter's embeddable timeline, which we will parse.
+     *
+     * @param int widgetId
+     *
+     * @param int number
+     *   Number of tweets to be returned. 0 for "as many as possible".
+     */
+    fetch: function(widgetId, number) {
+      id = widgetId;
+      limit = (typeof number === "number") ? number : 0;
       var c =  document.createElement("script");
       c.type = "text/javascript";
       c.src = "//cdn.syndication.twimg.com/widgets/timelines/" + id + "?&lang=en&callback=simpleTwitterFetcher.callback&suppress_response_codes=true&rnd=" + Math.random(); 
       document.getElementsByTagName("head")[0].appendChild(c);
     },
 
+    /**
+     * Retreive data stored in div#simpleTwitterFetcherData.
+     */
+    retreive: function() {
+      var data = document.getElementById("simpleTwitterFetcherData").getAttribute("data-simple-twitter-fetch");
+      return JSON.parse(data);
+    },
+
+    /**
+     * This is the callback invoked by fetch (really, called by Twitter's JSONP's
+     * response). It stores the latest Twitter timeline data in
+     * div#simpleTwitterFetcherData in the data-simple-twitter-fetcher
+     * attribute.
+     *
+     * @param html e 
+     *   JSON including rendered markup for an embeddable Twitter timeline
+     */
     callback: function(e) {
       var result = [];
 
+      // Get tweets passed in from call to Twitter via fetch method.
       xhrDoc = document.implementation.createHTMLDocument("XHR Doc");
       xhrDoc.documentElement.innerHTML = e.body;
-
       var tweets = xhrDoc.getElementsByClassName("tweet");
-      for (i = 0; i < tweets.length; i++) {
+
+      // Parse tweets.
+      var max = (limit > 0) ? limit : tweets.length;
+      for (i = 0; i < max; i++) {
         var tweet = {
           id:                this._getId(tweets[i]),
           permalink:         this._getPermalink(tweets[i]),
@@ -32,8 +68,19 @@ var simpleTwitterFetcher = function() {
         };
         result.push(tweet);
       }
+
+      // Store results.
+      // If div#simpleTwitterFetcherData element does not exist yet, create it.
+      if (!document.getElementById('simpleTwitterFetcherData')) {
+        var c =  document.createElement("div");
+        c.id = "simpleTwitterFetcherData";
+        document.getElementsByTagName("body")[0].appendChild(c);
+      }
+      // Get element where we're storing latest tweet data.
+      var element = document.getElementById("simpleTwitterFetcherData");
+      // Convert results to a string and store them.
+      element.setAttribute('data-simple-twitter-fetch', JSON.stringify(result));
       console.log(result);
-      return result;
     },
 
     /**
@@ -153,6 +200,6 @@ var simpleTwitterFetcher = function() {
     _getStatsFavorites: function(element) {
       return element.getElementsByClassName("stats-favorites")[0].getElementsByTagName("strong")[0].innerHTML;
     },
+  } // End return.
 
-  }
 }();
