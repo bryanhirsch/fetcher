@@ -100,7 +100,7 @@ var twitterFetcher = function () {
          * @return string
          */
         _getPermalink: function(element) {
-          var permalink = element.getElementsByClassName("permalink");
+          var permalink = element.getElementsByClassName("permalink")[0];
           return permalink.href;
         },
 
