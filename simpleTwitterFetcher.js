@@ -68,8 +68,10 @@ var simpleTwitterFetcher = function() {
         result.push(tweet);
       }
 
+      var latestTweetTime = Date.parse(result[0].time.datetime);
+      var currentLatestTweet = typeof(data[0]) != 'undefined' ? Date.parse(data[0].time.datetime) : 0;
       // Store results only if newer data comes in.
-      if (result.length > data.length) {
+      if (latestTweetTime > currentLatestTweet) {
         data = result;
         if (typeof(jQuery) != 'undefined') {
           jQuery.event.trigger('simpleTwitterFetcherUpdatedData', [data]);
