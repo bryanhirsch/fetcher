@@ -140,7 +140,7 @@ var twitterFetcher = function () {
          * @return obj
          */
         _getTweetContentHTML: function(element) {
-          return element.getElementsByClassName("e-entry-title")[0];
+          return element.getElementsByClassName("e-entry-title")[0].outerHTML;
         },
 
         /**
@@ -148,7 +148,7 @@ var twitterFetcher = function () {
          * @return obj
          */
         _getRetweetCreditHTML: function(element) {
-          return element.getElementsByClassName("retweet-credit")[0]; 
+          return element.getElementsByClassName("retweet-credit")[0].outerHTML;
         },
 
         /**
