@@ -1,4 +1,12 @@
 var simpleTwitterFetcher = function() {
+
+  // TODO Move this into Drupal. NOTE: If you want additional arguments, add to array
+  // in callback's trigger after this.data.
+  jQuery(document).bind('simpleTwitterFetcherUpdatedData', function(event, data) {
+    alert('test');
+    console.log(data);
+  });
+
   var id, limit, data;
   
   return {
@@ -69,6 +77,10 @@ var simpleTwitterFetcher = function() {
 
       // Store results.
       this.data = result;
+
+      if (typeof(jQuery) != 'undefined') {
+        jQuery.event.trigger('simpleTwitterFetcherUpdatedData', [this.data]);
+      }
 
     },
 
