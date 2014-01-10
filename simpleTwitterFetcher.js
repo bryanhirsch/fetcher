@@ -1,6 +1,6 @@
 var simpleTwitterFetcher = function() {
 
-  var id, limit, data;
+  var id, limit, data = [];
   
   return {
     /**
@@ -68,13 +68,13 @@ var simpleTwitterFetcher = function() {
         result.push(tweet);
       }
 
-      // Store results.
-      this.data = result;
-
-      if (typeof(jQuery) != 'undefined') {
-        jQuery.event.trigger('simpleTwitterFetcherUpdatedData', [this.data]);
+      // Store results only if newer data comes in.
+      if (result.length > data.length) {
+        data = result;
+        if (typeof(jQuery) != 'undefined') {
+          jQuery.event.trigger('simpleTwitterFetcherUpdatedData', [data]);
+        }
       }
-
     },
 
     /**
