@@ -70,12 +70,19 @@ var twitterFetcher = function () {
             window.tweet = tweets[i];
 
             var tweet = {
+              id:                this._getId(tweets[i]),
               permalink:         this._getPermalink(tweets[i]),
               time:              this._getTime(tweets[i]),
               author:            this._getAuthor(tweets[i]),
               contentHTML:       this._getTweetContentHTML(tweets[i]),
               retweetCreditHTML: this._getRetweetCreditHTML(tweets[i]),
               media:             this._getMedia(tweets[i]),
+              // TODO add detail-expander stuff here. (This is Twitter Card info).
+              statsRetweets:     this._getStatsRetweets(tweets[i]),
+              statsFavorites:    this._getStatsFavorites(tweets[i]),
+              retweetUrl:        this._getActionUrl(tweets[i], 'retweet'),
+              replyUrl:          this._getActionUrl(tweets[i], 'reply'),
+              favoriteUrl:       this._getActionUrl(tweets[i], 'favorite')
             };
             result.push(tweet);
           }
@@ -93,6 +100,30 @@ var twitterFetcher = function () {
               console.log(img.src);
             }
           }
+        },
+
+        /**
+         * @param HTML element
+         * @return int
+         */
+        _getId: function(element) {
+          return element.getAttribute("data-tweet-id");  
+        },
+
+        /**
+         * @param element HTML element
+         * @param action string
+         * @return string
+         */
+        _getActionUrl: function(element, action) {
+          var id = this._getId(element);
+          if (action == 'retweet') {
+            var url = 'https://twitter.com/intent/tweet/in_reply_to=' + id;
+          }
+          else {
+            var url = 'https://twitter.com/intent/' + action + '?tweet_id=' + id;
+          }
+          return url;
         },
 
         /**
@@ -171,6 +202,22 @@ var twitterFetcher = function () {
             };
           }
           return typeof(media != 'undefined') ? media : null;
+        },
+
+        /**
+         * @param HTML element
+         * @return int
+         */
+        _getStatsRetweets: function(element) {
+          return element.getElementsByClassName("stats-retweets")[0].getElementsByTagName("strong")[0].innerHTML;
+        },
+
+        /**
+         * @param HTML element
+         * @return int
+         */
+        _getStatsFavorites: function(element) {
+          return element.getElementsByClassName("stats-favorites")[0].getElementsByTagName("strong")[0].innerHTML;
         },
 
         callback: function (e) {
