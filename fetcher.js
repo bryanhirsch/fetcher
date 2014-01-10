@@ -162,11 +162,15 @@ var twitterFetcher = function () {
           var mediaElement = element.getElementsByClassName("inline-media")[0];
           if (typeof(mediaElement) != 'undefined') {
             var media = {
-              linkTo: mediaElement.getElementsByTagName("a")[0].getAttribute("href")
-              // UNFINISHED. CONTINUE HERE.
+              linkTo:      mediaElement.getElementsByTagName("a")[0].getAttribute("href"),
+              imageSource: mediaElement.getElementsByTagName("img")[0].getAttribute("src"),
+              imageTitle:  mediaElement.getElementsByTagName("img")[0].getAttribute("title"), 
+              imageAlt:    mediaElement.getElementsByTagName("img")[0].getAttribute("alt"),
+              imageWidth:  mediaElement.getElementsByTagName("img")[0].getAttribute("width"),
+              imageHeight: mediaElement.getElementsByTagName("img")[0].getAttribute("height")
             };
           }
-          return typeof(media != 'undefined') ? media : '';
+          return typeof(media != 'undefined') ? media : null;
         },
 
         callback: function (e) {
