@@ -1,12 +1,5 @@
 var simpleTwitterFetcher = function() {
 
-  // TODO Move this into Drupal. NOTE: If you want additional arguments, add to array
-  // in callback's trigger after this.data.
-  jQuery(document).bind('simpleTwitterFetcherUpdatedData', function(event, data) {
-    alert('test');
-    console.log(data);
-  });
-
   var id, limit, data;
   
   return {
@@ -161,7 +154,8 @@ var simpleTwitterFetcher = function() {
      * @return obj
      */
     _getRetweetCreditHTML: function(element) {
-      return element.getElementsByClassName("retweet-credit")[0].outerHTML;
+      var element = element.getElementsByClassName("retweet-credit")[0];
+      return typeof(element) != 'undefined' ? element.outerHTML : null;
     },
 
     /**
@@ -183,7 +177,7 @@ var simpleTwitterFetcher = function() {
           imageHeight: mediaElement.getElementsByTagName("img")[0].getAttribute("height")
         };
       }
-      return typeof(media != 'undefined') ? media : null;
+      return typeof(media) != 'undefined' ? media : null;
     },
 
     /**
@@ -191,7 +185,8 @@ var simpleTwitterFetcher = function() {
      * @return int
      */
     _getStatsRetweets: function(element) {
-      return element.getElementsByClassName("stats-retweets")[0].getElementsByTagName("strong")[0].innerHTML;
+      var element = element.getElementsByClassName("stats-retweets")[0];
+      return typeof(element) != 'undefined' ? element.getElementsByTagName("strong")[0].innerHTML : null;
     },
 
     /**
@@ -199,7 +194,8 @@ var simpleTwitterFetcher = function() {
      * @return int
      */
     _getStatsFavorites: function(element) {
-      return element.getElementsByClassName("stats-favorites")[0].getElementsByTagName("strong")[0].innerHTML;
+      var element = element.getElementsByClassName("stats-favorites")[0];
+      return typeof(element) != 'undefined' ? element.getElementsByTagName("strong")[0].innerHTML : null;
     },
   } // End return.
 
