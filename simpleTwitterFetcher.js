@@ -28,7 +28,7 @@ var simpleTwitterFetcher = function() {
      * Retreive tweet data stored in simpleTwitterFetcher.data.
      */
     retreive: function() {
-      return this.data;
+      return data;
     },
 
     /**
